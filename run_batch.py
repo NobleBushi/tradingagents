@@ -26,6 +26,7 @@ Output (stdout): JSON array
 Progress/errors go to stderr so stdout stays clean JSON.
 """
 import json
+import os
 import sys
 import time
 import traceback
@@ -36,16 +37,24 @@ from tradingagents.graph.trading_graph import TradingAgentsGraph
 MAC_MINI_URL = "http://localhost:8082"
 MAC_MINI_MODEL = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
 
+GAMING_PC_URL = "http://localhost:1234/v1"
+GAMING_PC_MODEL = "google/gemma-4-e4b"
+
+# Override via env vars for comparison runs:
+#   TRADING_BACKEND_URL=http://... TRADING_MODEL=model-name uv run python run_batch.py ...
+_BACKEND_URL = os.environ.get("TRADING_BACKEND_URL", MAC_MINI_URL)
+_MODEL = os.environ.get("TRADING_MODEL", MAC_MINI_MODEL)
+
 
 def build_graph() -> TradingAgentsGraph:
     config = DEFAULT_CONFIG.copy()
     config["llm_provider"] = "ollama"
-    config["backend_url"] = MAC_MINI_URL
-    config["quick_think_llm"] = MAC_MINI_MODEL
-    config["deep_think_llm"] = MAC_MINI_MODEL
+    config["backend_url"] = _BACKEND_URL
+    config["quick_think_llm"] = _MODEL
+    config["deep_think_llm"] = _MODEL
     config["max_debate_rounds"] = 1
     config["max_risk_discuss_rounds"] = 1
-    config["checkpoint_enabled"] = True
+    config["checkpoint_enabled"] = False
     return TradingAgentsGraph(debug=False, config=config)
 
 
