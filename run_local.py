@@ -20,6 +20,25 @@ import sys
 from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
 
+def _load_dotenv() -> None:
+    """Load KEY=VALUE pairs from a .env next to this script (no external deps).
+
+    Real environment variables take precedence over .env values.
+    """
+    env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+    if not os.path.exists(env_path):
+        return
+    with open(env_path) as fh:
+        for line in fh:
+            line = line.strip()
+            if not line or line.startswith("#") or "=" not in line:
+                continue
+            key, _, value = line.partition("=")
+            os.environ.setdefault(key.strip(), value.strip())
+
+
+_load_dotenv()
+
 # Endpoints — override for your own inference hosts
 GAMING_PC_URL  = os.environ.get("TRADING_GAMING_PC_URL", "http://localhost:1234")
 MAC_MINI_URL   = os.environ.get("TRADING_MAC_MINI_URL", "http://localhost:8082")
