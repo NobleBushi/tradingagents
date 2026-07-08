@@ -34,10 +34,10 @@ import traceback
 from tradingagents.default_config import DEFAULT_CONFIG
 from tradingagents.graph.trading_graph import TradingAgentsGraph
 
-MAC_MINI_URL = "http://localhost:8082"
+MAC_MINI_URL = os.environ.get("TRADING_MAC_MINI_URL", "http://localhost:8082")
 MAC_MINI_MODEL = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
 
-GAMING_PC_URL = "http://localhost:1234/v1"
+GAMING_PC_URL = os.environ.get("TRADING_GAMING_PC_URL", "http://localhost:1234/v1")
 GAMING_PC_MODEL = "google/gemma-4-e4b"
 
 # Override via env vars for comparison runs:

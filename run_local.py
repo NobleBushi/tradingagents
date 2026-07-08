@@ -15,13 +15,14 @@ Examples:
     uv run python run_local.py
     uv run python run_local.py AAPL 2025-03-07
 """
+import os
 import sys
 from tradingagents.graph.trading_graph import TradingAgentsGraph
 from tradingagents.default_config import DEFAULT_CONFIG
 
-# Endpoints
-GAMING_PC_URL  = "http://localhost:1234"
-MAC_MINI_URL   = "http://localhost:8082"
+# Endpoints — override for your own inference hosts
+GAMING_PC_URL  = os.environ.get("TRADING_GAMING_PC_URL", "http://localhost:1234")
+MAC_MINI_URL   = os.environ.get("TRADING_MAC_MINI_URL", "http://localhost:8082")
 GAMING_PC_MODEL = "google/gemma-4-e4b"
 MAC_MINI_MODEL  = "gemma-4-26B-A4B-it-UD-Q4_K_M.gguf"
 
